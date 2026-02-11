@@ -18,18 +18,18 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl">
-      <div className="relative">
+    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
+      <div className="flex gap-2">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search skills by name, keywords, or categories..."
-          className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-gray-100"
+          placeholder="Search skills..."
+          className="flex-1 min-w-0 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:border-transparent text-gray-900 dark:text-gray-100 text-sm placeholder:text-gray-400"
         />
         <button
           type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition-colors"
+          className="px-4 py-2.5 bg-gray-900 dark:bg-white hover:bg-gray-700 dark:hover:bg-gray-200 text-white dark:text-gray-900 text-sm font-medium rounded-lg transition-colors shrink-0"
         >
           Search
         </button>

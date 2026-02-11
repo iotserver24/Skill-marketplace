@@ -72,98 +72,91 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
   const quality = getQualityLabel(skill.aiProcessed.qualityScore);
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto py-8 sm:py-12">
+        {/* Breadcrumb */}
+        <a href="/" className="inline-flex items-center text-sm text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-6">
+          ← Back to browse
+        </a>
+
         {/* Header */}
-        <div className="mb-8">
-          <a href="/" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mb-4 inline-block">
-            ← Back to browse
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            {skill.name}
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-            {skill.description}
-          </p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
+          {skill.name}
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400 mb-4">
+          {skill.description}
+        </p>
 
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {skill.categories.map((category: string) => (
-              <span
-                key={category}
-                className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full"
-              >
-                {category}
-              </span>
-            ))}
-          </div>
-
-          {/* Download Button */}
-          <a
-            href={`/api/skills/${id}/download`}
-            download
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-          >
-            <span>↓</span>
-            Download Skill
-          </a>
+        {/* Categories */}
+        <div className="flex flex-wrap gap-1.5 mb-6">
+          {skill.categories.map((category: string) => (
+            <span
+              key={category}
+              className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-md"
+            >
+              {category}
+            </span>
+          ))}
         </div>
 
-        {/* Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Download Button */}
+        <a
+          href={`/api/skills/${id}/download`}
+          download
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white hover:bg-gray-700 dark:hover:bg-gray-200 text-white dark:text-gray-900 text-sm font-medium rounded-lg transition-colors"
+        >
+          ↓ Download Skill
+        </a>
+
+        {/* Info Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 mb-6">
           {/* Author */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
-              AUTHOR
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
+              Author
             </h3>
-            <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
               {skill.author.name}
             </p>
             {skill.author.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 {skill.author.description}
               </p>
             )}
           </div>
 
           {/* Stats */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
-              STATS
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
+              Stats
             </h3>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Downloads</span>
-                <span className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                  {skill.downloads}
-                </span>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">Downloads</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{skill.downloads}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Quality</span>
-                <span className={`text-lg font-medium ${quality.color}`}>
-                  {quality.label}
-                </span>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">Quality</span>
+                <span className={`font-medium ${quality.color}`}>{quality.label}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Uploaded</span>
-                <span className="text-sm text-gray-900 dark:text-gray-100">
-                  {formatDate(skill.uploadedAt)}
-                </span>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">Uploaded</span>
+                <span className="text-gray-900 dark:text-gray-100">{formatDate(skill.uploadedAt)}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Keywords */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 mb-8">
-          <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">
-            KEYWORDS
+        <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 mb-6">
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+            Keywords
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {skill.keywords.map((keyword: string) => (
               <span
                 key={keyword}
-                className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded"
+                className="px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded-md"
               >
                 {keyword}
               </span>
@@ -171,52 +164,38 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
 
-        {/* AI Processing Info */}
+        {/* AI Security Processing */}
         {(skill.aiProcessed.securityIssuesFound || skill.aiProcessed.modificationsMade.length > 0) && (
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg border border-yellow-200 dark:border-yellow-800 mb-8">
-            <h3 className="text-sm font-semibold text-yellow-900 dark:text-yellow-200 mb-3">
-              🔒 AI SECURITY PROCESSING
+          <div className="p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg border border-yellow-200 dark:border-yellow-800/50 mb-6">
+            <h3 className="text-xs font-semibold text-yellow-700 dark:text-yellow-300 uppercase tracking-wide mb-2">
+              🔒 Security Processing
             </h3>
             {skill.aiProcessed.securityIssuesFound && (
-              <p className="text-sm text-yellow-800 dark:text-yellow-300 mb-2">
+              <p className="text-sm text-yellow-700 dark:text-yellow-400 mb-1">
                 Security issues were detected and resolved.
               </p>
             )}
             {skill.aiProcessed.modificationsMade.length > 0 && (
-              <div>
-                <p className="text-sm text-yellow-800 dark:text-yellow-300 mb-2">
-                  Modifications made:
-                </p>
-                <ul className="list-disc list-inside text-sm text-yellow-700 dark:text-yellow-400 space-y-1">
-                  {skill.aiProcessed.modificationsMade.map((mod: string, i: number) => (
-                    <li key={i}>{mod}</li>
-                  ))}
-                </ul>
-              </div>
+              <ul className="list-disc list-inside text-xs text-yellow-600 dark:text-yellow-400 space-y-0.5">
+                {skill.aiProcessed.modificationsMade.map((mod: string, i: number) => (
+                  <li key={i}>{mod}</li>
+                ))}
+              </ul>
             )}
           </div>
         )}
 
         {/* How to Use */}
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3">
-            💡 How to Use This Skill
+        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-800 mb-8">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
+            💡 How to Use
           </h3>
-          <div className="space-y-3 text-sm text-blue-800 dark:text-blue-300">
-            <p>
-              <strong>1. Download the skill</strong> by clicking the button above
-            </p>
-            <p>
-              <strong>2. Place it in your project</strong> at <code className="bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">./skills/</code> directory
-            </p>
-            <p>
-              <strong>3. Use with XibeCode or MCP</strong> - The skill will be automatically loaded
-            </p>
-            <div className="mt-4 p-3 bg-blue-100 dark:bg-blue-900 rounded">
-              <p className="font-mono text-xs">
-                # MCP API endpoint<br />
-                GET /mcp/skills/{id}/content
-              </p>
+          <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <p><strong>1.</strong> Download the skill file</p>
+            <p><strong>2.</strong> Place it in your project&apos;s <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs">./skills/</code> directory</p>
+            <p><strong>3.</strong> Use with XibeCode or MCP — loaded automatically</p>
+            <div className="mt-3 p-2 bg-gray-200 dark:bg-gray-700 rounded font-mono text-xs">
+              GET /mcp/skills/{id}/content
             </div>
           </div>
         </div>

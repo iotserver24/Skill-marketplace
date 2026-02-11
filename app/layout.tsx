@@ -13,49 +13,51 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body className="antialiased">
-        <nav className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+        <nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center justify-between h-14">
               <a href="/" className="flex items-center gap-2">
-                <span className="text-2xl">🎯</span>
-                <span className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <span className="text-xl">🎯</span>
+                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   Skills Marketplace
                 </span>
               </a>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <a
                   href="/"
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
+                  className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors px-2 py-1.5"
                 >
                   Browse
                 </a>
                 <a
                   href="/upload"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                  className="text-sm px-3 py-1.5 bg-gray-900 dark:bg-white hover:bg-gray-700 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-medium rounded-md transition-colors"
                 >
-                  Upload Skill
+                  Upload
                 </a>
               </div>
             </div>
           </div>
         </nav>
-        <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
           {children}
         </main>
         <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              <p>Skills Marketplace - Open source AI skill sharing platform</p>
-              <p className="mt-2">
-                <a href="/api/mcp/skills/search" className="text-blue-600 dark:text-blue-400 hover:underline">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-400">
+              <p>Skills Marketplace — Open source AI skill sharing</p>
+              <div className="flex items-center gap-4">
+                <a href="/api/mcp/skills/search" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   MCP API
                 </a>
-                {' · '}
-                <a href="https://github.com" className="text-blue-600 dark:text-blue-400 hover:underline">
+                <a href="https://github.com" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   GitHub
                 </a>
-              </p>
+              </div>
             </div>
           </div>
         </footer>
