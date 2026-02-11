@@ -8,6 +8,6 @@ export const anthropic = new Anthropic({
 
 export const AI_CONFIG = {
   model: process.env.ANTHROPIC_MODEL_ID || 'claude-sonnet-4-20250514',
-  maxTokens: 4096,
+  maxTokens: 32768,
   temperature: 0.3, // Lower temperature for consistent metadata extraction
 };
