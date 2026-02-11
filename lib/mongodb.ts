@@ -14,11 +14,6 @@ function validateMongoUri(uri: string): void {
   }
 }
 
-// Global cache for MongoDB client promise
-let globalWithMongo = global as typeof globalThis & {
-  _mongoClientPromise?: Promise<MongoClient>;
-};
-
 // Lazy initialization function
 function getClientPromise(): Promise<MongoClient> {
   // Check if MongoDB URI is available
@@ -33,26 +28,20 @@ function getClientPromise(): Promise<MongoClient> {
 
   const options = {};
 
-  if (process.env.NODE_ENV === 'development') {
-    // In development mode, use a global variable to preserve the connection
-    if (!globalWithMongo._mongoClientPromise) {
-      const client = new MongoClient(uri, options);
-      globalWithMongo._mongoClientPromise = client.connect();
-    }
-    return globalWithMongo._mongoClientPromise;
-  } else {
-    // In production mode, create a new client for each connection
+  // Use global cache in both development and production to reuse connections
+  let globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise?: Promise<MongoClient>;
+  };
+
+  if (!globalWithMongo._mongoClientPromise) {
     const client = new MongoClient(uri, options);
-    return client.connect();
+    globalWithMongo._mongoClientPromise = client.connect();
   }
+  
+  return globalWithMongo._mongoClientPromise;
 }
 
 export async function getDb(): Promise<Db> {
   const client = await getClientPromise();
   return client.db('skills-marketplace');
-}
-
-// Export a function that returns the client promise
-export default function getClient(): Promise<MongoClient> {
-  return getClientPromise();
 }
