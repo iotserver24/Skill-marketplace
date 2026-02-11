@@ -1,11 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/mongodb';
+import { rateLimit } from '@/lib/rate-limit';
 
 /**
  * MCP-compatible search endpoint
  * Returns simplified results optimized for CLI/MCP tools
  */
 export async function GET(request: NextRequest) {
+  // Apply rate limiting: 60 searches per minute per IP
+  const rateLimitResponse = rateLimit(request, {
+    maxRequests: 60,
+    windowMs: 60 * 1000, // 1 minute
+    message: 'Too many MCP search requests from this IP',
+  });
+  
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get('q') || '';
