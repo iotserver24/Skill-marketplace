@@ -46,93 +46,108 @@ export default async function HomePage({
 
   return (
     <div className="px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         {/* Hero */}
-        <div className="text-center py-10 sm:py-16">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
-            Discover AI Coding Skills
+        <div className="text-center pt-16 pb-10 sm:pt-24 sm:pb-14">
+          <h1 className="text-3xl sm:text-5xl font-bold text-white mb-3 tracking-tight">
+            Skills Marketplace
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
-            Community-powered skills to enhance your AI development workflow
+          <p className="text-sm sm:text-base text-zinc-400 mb-8 max-w-md mx-auto">
+            Discover, share, and install community-powered skills for AI coding assistants
           </p>
           <SearchBar />
         </div>
 
-        {/* Stats */}
-        <div className="flex items-center justify-center gap-6 sm:gap-10 mb-10 text-center">
+        {/* Stats bar */}
+        <div className="flex items-center justify-center gap-6 sm:gap-8 mb-8 text-center">
           <div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-lg font-mono font-semibold text-white">
               {pagination.total}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">
               Skills
             </div>
           </div>
-          <div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+          <div className="w-px h-6 bg-zinc-800" />
           <div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-lg font-mono font-semibold text-white">
               {skills.reduce((sum: number, s: any) => sum + s.downloads, 0)}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              Downloads
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">
+              Installs
             </div>
           </div>
-          <div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+          <div className="w-px h-6 bg-zinc-800" />
           <div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-lg font-mono font-semibold text-white">
               Free
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">
               Open Source
             </div>
           </div>
         </div>
 
-        {/* Results */}
-        {query && (
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              Results for &quot;{query}&quot;
+        {/* Leaderboard */}
+        <div className="border border-zinc-800/80 rounded-lg overflow-hidden bg-zinc-900/50">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800/80">
+            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              {query ? `Results for "${query}"` : 'Skills Leaderboard'}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-              {pagination.total} skill{pagination.total !== 1 ? 's' : ''} found
-            </p>
+            {query && (
+              <span className="text-xs text-zinc-500">
+                {pagination.total} found
+              </span>
+            )}
           </div>
-        )}
 
-        {/* Skills Grid */}
-        {skills.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {skills.map((skill: any) => (
-              <SkillCard key={skill.id} skill={skill} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <p className="text-gray-400 dark:text-gray-500">
-              {query ? 'No skills found. Try a different search.' : 'No skills yet. Be the first to upload one!'}
-            </p>
-          </div>
-        )}
+          {/* Skills List */}
+          {skills.length > 0 ? (
+            <div>
+              {skills.map((skill: any, index: number) => (
+                <SkillCard
+                  key={skill.id}
+                  skill={skill}
+                  rank={(page - 1) * 20 + index + 1}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <p className="text-sm text-zinc-500">
+                {query ? 'No skills found. Try a different search.' : 'No skills yet. Be the first to upload one!'}
+              </p>
+              {!query && (
+                <a
+                  href="/upload"
+                  className="inline-block mt-4 text-sm px-4 py-2 bg-white hover:bg-zinc-200 text-zinc-900 font-medium rounded-md transition-colors"
+                >
+                  Upload a Skill
+                </a>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="mt-10 mb-6 flex items-center justify-center gap-2">
+          <div className="mt-6 mb-6 flex items-center justify-center gap-2">
             {page > 1 && (
               <a
                 href={`/?${new URLSearchParams({ ...(query && { q: query }), page: (page - 1).toString() }).toString()}`}
-                className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="px-3 py-1.5 text-sm border border-zinc-700 rounded-md hover:bg-zinc-800 transition-colors text-zinc-300"
               >
                 ← Prev
               </a>
             )}
-            <span className="px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400">
+            <span className="px-3 py-1.5 text-sm text-zinc-500 font-mono">
               {page} / {pagination.totalPages}
             </span>
             {page < pagination.totalPages && (
               <a
                 href={`/?${new URLSearchParams({ ...(query && { q: query }), page: (page + 1).toString() }).toString()}`}
-                className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="px-3 py-1.5 text-sm border border-zinc-700 rounded-md hover:bg-zinc-800 transition-colors text-zinc-300"
               >
                 Next →
               </a>

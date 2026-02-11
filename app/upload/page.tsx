@@ -9,25 +9,25 @@ export default function UploadPage() {
   return (
     <div className="px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center py-10 sm:py-14">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 tracking-tight">
+        <div className="text-center pt-12 pb-8 sm:pt-16 sm:pb-10">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
             Upload a Skill
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-zinc-400">
             Share your expertise with the community
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl border border-gray-200 dark:border-gray-800">
+        <div className="border border-zinc-800/80 rounded-lg bg-zinc-900/50 p-6 sm:p-8">
           <UploadForm />
         </div>
 
-        <div className="mt-8 mb-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+        <div className="mt-8 mb-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="p-4 border border-zinc-800/80 rounded-lg">
+            <h3 className="text-sm font-medium text-zinc-200 mb-2">
               📋 Good Skills
             </h3>
-            <ul className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
+            <ul className="space-y-1 text-xs text-zinc-500">
               <li>✓ Clear AI instructions</li>
               <li>✓ Focused on specific tasks</li>
               <li>✓ Includes examples</li>
@@ -35,20 +35,20 @@ export default function UploadPage() {
             </ul>
           </div>
 
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <div className="p-4 border border-zinc-800/80 rounded-lg">
+            <h3 className="text-sm font-medium text-zinc-200 mb-2">
               🤖 AI Processing
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-zinc-500">
               Claude AI extracts metadata, categorizes content, and scans for sensitive information automatically.
             </p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <div className="p-4 border border-zinc-800/80 rounded-lg">
+            <h3 className="text-sm font-medium text-zinc-200 mb-2">
               💡 Examples
             </h3>
-            <ul className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
+            <ul className="space-y-1 text-xs text-zinc-500">
               <li>• React best practices</li>
               <li>• Python API patterns</li>
               <li>• Testing strategies</li>
