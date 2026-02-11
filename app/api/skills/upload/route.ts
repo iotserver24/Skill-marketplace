@@ -8,7 +8,7 @@ import { rateLimit } from '@/lib/rate-limit';
 
 // Validation schema
 const uploadSchema = z.object({
-  content: z.string().min(10, 'Skill content too short').max(100000, 'Skill content too large'),
+  content: z.string().min(10, 'Skill content too short').max(500000, 'Skill content too large (max 500KB)'),
   authorName: z.string().min(2, 'Author name required').max(100),
   authorEmail: z.string().email('Valid email required'),
   authorDescription: z.string().max(500).optional(),

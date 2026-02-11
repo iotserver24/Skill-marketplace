@@ -18,7 +18,43 @@ export interface ProcessedSkill {
  * - Quality assessment
  */
 export async function processSkill(content: string, userProvidedName?: string): Promise<ProcessedSkill> {
-  const prompt = `You are analyzing a skill file for the Skills Marketplace. This is a markdown file containing instructions and prompts for AI coding assistants.
+  // For large content (>10KB), only extract metadata — don't ask AI to return full sanitized content
+  const isLargeContent = content.length > 10_000;
+  const contentPreview = isLargeContent ? content.substring(0, 8_000) + '\n\n[... content truncated for analysis ...]' : content;
+
+  const prompt = isLargeContent
+    ? `You are analyzing a skill file for the Skills Marketplace. This is a large markdown file (${(content.length / 1000).toFixed(0)}KB). You are given a preview of the content.
+
+Your tasks:
+1. Extract metadata:
+   - Suggest a clear, descriptive name (max 50 chars) ${userProvidedName ? `or use "${userProvidedName}"` : ''}
+   - Write a concise description (max 200 chars)
+   - Generate 3-8 relevant keywords
+   - Categorize into 1-3 categories (e.g., "frontend", "backend", "testing", "devops", "react", "python", etc.)
+
+2. Quality assessment (0.0-1.0):
+   - Clarity of instructions
+   - Usefulness for AI coding
+   - Completeness
+   - Best practices followed
+
+Respond ONLY with a JSON object (no markdown, no explanations):
+{
+  "name": "Skill Name",
+  "description": "Brief description",
+  "keywords": ["keyword1", "keyword2"],
+  "categories": ["category1", "category2"],
+  "securityIssuesFound": false,
+  "modificationsMade": [],
+  "qualityScore": 0.85
+}
+
+Here's the skill content preview:
+
+---
+${contentPreview}
+---`
+    : `You are analyzing a skill file for the Skills Marketplace. This is a markdown file containing instructions and prompts for AI coding assistants.
 
 Your tasks:
 1. Extract metadata:
@@ -66,7 +102,7 @@ ${content}
   try {
     const response = await anthropic.messages.create({
       model: AI_CONFIG.model,
-      max_tokens: AI_CONFIG.maxTokens,
+      max_tokens: isLargeContent ? 2048 : AI_CONFIG.maxTokens,
       temperature: AI_CONFIG.temperature,
       messages: [
         {
@@ -104,7 +140,7 @@ ${content}
     const result = JSON.parse(jsonString.trim());
 
     // Validate required fields
-    if (!result.name || !result.description || !result.sanitizedContent) {
+    if (!result.name || !result.description) {
       throw new Error('AI response missing required fields');
     }
 
@@ -116,7 +152,8 @@ ${content}
       securityIssuesFound: result.securityIssuesFound || false,
       modificationsMade: result.modificationsMade || [],
       qualityScore: result.qualityScore || 0.5,
-      sanitizedContent: result.sanitizedContent,
+      // For large content, use original content; for small content, use AI-sanitized version
+      sanitizedContent: isLargeContent ? content : (result.sanitizedContent || content),
     };
   } catch (error) {
     console.error('AI processing error:', error);
