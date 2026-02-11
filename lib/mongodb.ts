@@ -8,8 +8,9 @@ function validateMongoUri(uri: string): void {
   
   // Check for valid MongoDB URI scheme
   if (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://')) {
+    const scheme = uri.includes('://') ? uri.split('://')[0] : uri.substring(0, 20);
     throw new Error(
-      `Invalid MongoDB URI scheme. Expected 'mongodb://' or 'mongodb+srv://', but got: '${uri.split('://')[0]}://'`
+      `Invalid MongoDB URI scheme. Expected 'mongodb://' or 'mongodb+srv://', but got: '${scheme}://'`
     );
   }
 }
