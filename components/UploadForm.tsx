@@ -89,7 +89,7 @@ export default function UploadForm() {
             ✅ Uploaded successfully
           </h3>
           <p className="text-sm text-green-700 dark:text-green-300 mb-2">
-            {result.skill.name}
+            <strong>{result.skill.name}</strong>
           </p>
           <div className="flex flex-wrap gap-1.5 mb-2">
             {result.skill.categories.map((cat: string) => (
