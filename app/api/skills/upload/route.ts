@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { getDb } from '@/lib/mongodb';
 import { uploadToR2 } from '@/lib/r2';
 import { processSkill } from '@/lib/ai-processor';
-import { CreateSkillInput } from '@/models/Skill';
+import { rateLimit } from '@/lib/rate-limit';
 
 // Validation schema
 const uploadSchema = z.object({
@@ -16,6 +16,17 @@ const uploadSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Apply rate limiting: 10 uploads per 10 minutes per IP
+  const rateLimitResponse = rateLimit(request, {
+    maxRequests: 10,
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    message: 'Too many skill uploads from this IP',
+  });
+  
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     // Parse request body
     const body = await request.json();
@@ -50,7 +61,7 @@ export async function POST(request: NextRequest) {
     const db = await getDb();
     const skillsCollection = db.collection('skills');
 
-    const newSkill: CreateSkillInput = {
+    const newSkill: Omit<import('@/models/Skill').Skill, '_id'> = {
       name: processed.name,
       description: processed.description,
       author: {

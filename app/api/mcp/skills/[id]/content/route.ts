@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb';
 import { getFromR2 } from '@/lib/r2';
+import { rateLimit } from '@/lib/rate-limit';
 
 /**
  * MCP-compatible endpoint to get skill content directly
@@ -11,6 +12,17 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Apply rate limiting: 30 requests per minute per IP
+  const rateLimitResponse = rateLimit(request, {
+    maxRequests: 30,
+    windowMs: 60 * 1000, // 1 minute
+    message: 'Too many MCP content requests from this IP',
+  });
+  
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     const { id } = await params;
 
