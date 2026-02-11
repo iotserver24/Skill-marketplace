@@ -8,9 +8,8 @@ function validateMongoUri(uri: string): void {
   
   // Check for valid MongoDB URI scheme
   if (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://')) {
-    const scheme = uri.includes('://') ? uri.split('://')[0] : uri.substring(0, 20);
     throw new Error(
-      `Invalid MongoDB URI scheme. Expected 'mongodb://' or 'mongodb+srv://', but got: '${scheme}://'`
+      "Invalid MongoDB URI scheme. Expected 'mongodb://' or 'mongodb+srv://'"
     );
   }
 }
@@ -19,7 +18,9 @@ function validateMongoUri(uri: string): void {
 function getClientPromise(): Promise<MongoClient> {
   // Check if MongoDB URI is available
   if (!process.env.MONGODB_URI) {
-    throw new Error('Please add your MongoDB URI to .env');
+    throw new Error(
+      'Environment variable MONGODB_URI is not set. Configure it in your .env file for local development or in your deployment platform\'s environment settings (e.g., https://vercel.com/docs/projects/environment-variables).'
+    );
   }
 
   const uri = process.env.MONGODB_URI;
@@ -36,7 +37,12 @@ function getClientPromise(): Promise<MongoClient> {
 
   if (!globalWithMongo._mongoClientPromise) {
     const client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+    // Wrap the connection promise to clear cache on failure
+    globalWithMongo._mongoClientPromise = client.connect().catch((error) => {
+      // Clear the cached promise so next attempt can retry
+      globalWithMongo._mongoClientPromise = undefined;
+      throw error;
+    });
   }
   
   return globalWithMongo._mongoClientPromise;
