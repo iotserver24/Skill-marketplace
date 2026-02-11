@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     const db = await getDb();
     const skillsCollection = db.collection('skills');
 
-    const newSkill: CreateSkillInput = {
+    const newSkill: Omit<import('@/models/Skill').Skill, '_id'> = {
       name: processed.name,
       description: processed.description,
       author: {

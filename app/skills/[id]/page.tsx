@@ -88,7 +88,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
 
           {/* Categories */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {skill.categories.map((category) => (
+            {skill.categories.map((category: string) => (
               <span
                 key={category}
                 className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full"
@@ -160,7 +160,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
             KEYWORDS
           </h3>
           <div className="flex flex-wrap gap-2">
-            {skill.keywords.map((keyword) => (
+            {skill.keywords.map((keyword: string) => (
               <span
                 key={keyword}
                 className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded"
@@ -188,7 +188,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
                   Modifications made:
                 </p>
                 <ul className="list-disc list-inside text-sm text-yellow-700 dark:text-yellow-400 space-y-1">
-                  {skill.aiProcessed.modificationsMade.map((mod, i) => (
+                  {skill.aiProcessed.modificationsMade.map((mod: string, i: number) => (
                     <li key={i}>{mod}</li>
                   ))}
                 </ul>
