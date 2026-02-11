@@ -11,15 +11,28 @@ interface RateLimitRecord {
 // In-memory store for rate limit tracking
 const rateLimitStore = new Map<string, RateLimitRecord>();
 
-// Clean up expired entries every 5 minutes
-setInterval(() => {
+// Track last cleanup time
+let lastCleanupTime = Date.now();
+
+/**
+ * Clean up expired entries (called during rate limit checks to avoid setInterval in serverless)
+ */
+function cleanupExpiredEntries() {
   const now = Date.now();
+  
+  // Only cleanup every 5 minutes to avoid performance overhead
+  if (now - lastCleanupTime < 5 * 60 * 1000) {
+    return;
+  }
+  
+  lastCleanupTime = now;
+  
   for (const [ip, record] of rateLimitStore.entries()) {
     if (record.resetAt < now) {
       rateLimitStore.delete(ip);
     }
   }
-}, 5 * 60 * 1000);
+}
 
 export interface RateLimitConfig {
   /** Maximum number of requests allowed */
@@ -69,6 +82,9 @@ export function getClientIp(request: Request): string {
  * Check if a request should be rate limited
  */
 export function checkRateLimit(ip: string, config: RateLimitConfig): RateLimitResult {
+  // Perform cleanup on each check (lazy cleanup for serverless compatibility)
+  cleanupExpiredEntries();
+  
   const now = Date.now();
   const record = rateLimitStore.get(ip);
   
