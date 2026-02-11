@@ -81,8 +81,27 @@ ${content}
       throw new Error('Unexpected response type from AI');
     }
 
+    // Extract JSON string from response
+    let rawText = textContent.text;
+
+    // 1. Remove thinking tokens if present
+    rawText = rawText.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+
+    // 2. Try to find JSON in markdown code blocks
+    const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/```\s*([\s\S]*?)\s*```/);
+    let jsonString = jsonMatch ? jsonMatch[1] : rawText;
+
+    // 3. Fallback: find the first { and last }
+    if (!jsonString.trim().startsWith('{')) {
+      const firstBrace = rawText.indexOf('{');
+      const lastBrace = rawText.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        jsonString = rawText.substring(firstBrace, lastBrace + 1);
+      }
+    }
+
     // Parse JSON response
-    const result = JSON.parse(textContent.text);
+    const result = JSON.parse(jsonString.trim());
 
     // Validate required fields
     if (!result.name || !result.description || !result.sanitizedContent) {
@@ -101,7 +120,7 @@ ${content}
     };
   } catch (error) {
     console.error('AI processing error:', error);
-    
+
     // Fallback: basic processing without AI
     return {
       name: userProvidedName || 'Untitled Skill',

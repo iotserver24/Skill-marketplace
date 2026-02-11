@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     windowMs: 60 * 1000, // 1 minute
     message: 'Too many search requests from this IP',
   });
-  
+
   if (rateLimitResponse) {
     return rateLimitResponse;
   }
@@ -22,8 +22,10 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const sort = searchParams.get('sort') || 'recent'; // recent, popular, quality
 
+    console.log('[DEBUG] Search Query:', { query, category, sort });
     const db = await getDb();
     const skillsCollection = db.collection('skills');
+    console.log('[DEBUG] Connected to MongoDB for search');
 
     // Build search filter
     const filter: any = {};

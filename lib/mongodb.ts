@@ -5,7 +5,7 @@ function validateMongoUri(uri: string): void {
   if (!uri) {
     throw new Error('MongoDB URI is empty or undefined');
   }
-  
+
   // Check for valid MongoDB URI scheme
   if (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://')) {
     throw new Error(
@@ -24,9 +24,10 @@ function getClientPromise(): Promise<MongoClient> {
   }
 
   const uri = process.env.MONGODB_URI;
-  
+  console.log('[DEBUG] MONGODB_URI:', uri);
+
   // Validate URI format
-  validateMongoUri(uri);
+  validateMongoUri(uri!);
 
   const options = {};
 
@@ -44,7 +45,7 @@ function getClientPromise(): Promise<MongoClient> {
       throw error;
     });
   }
-  
+
   return globalWithMongo._mongoClientPromise;
 }
 

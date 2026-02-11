@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     windowMs: 10 * 60 * 1000, // 10 minutes
     message: 'Too many skill uploads from this IP',
   });
-  
+
   if (rateLimitResponse) {
     return rateLimitResponse;
   }
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   try {
     // Parse request body
     const body = await request.json();
-    
+
     // Validate input
     const validationResult = uploadSchema.safeParse(body);
     if (!validationResult.success) {
@@ -103,9 +103,17 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('Upload process failed:', error);
+
+    // Check if it's an R2 error (AccessDenied etc)
+    const isR2Error = error instanceof Error && (error.name === 'AccessDenied' || (error as any).Code === 'AccessDenied');
+
     return NextResponse.json(
-      { error: 'Failed to upload skill', message: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: isR2Error ? 'Storage Access Denied' : 'Failed to upload skill',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        assistance: isR2Error ? 'Please check your R2 bucket permissions and API token.' : undefined
+      },
       { status: 500 }
     );
   }
