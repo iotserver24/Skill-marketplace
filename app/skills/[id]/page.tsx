@@ -63,160 +63,156 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
     });
   };
 
+  const formatDownloads = (count: number) => {
+    if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
+    return count.toString();
+  };
+
   const getQualityLabel = (score: number) => {
-    if (score >= 0.8) return { label: 'Excellent', color: 'text-green-600 dark:text-green-400' };
-    if (score >= 0.6) return { label: 'Good', color: 'text-yellow-600 dark:text-yellow-400' };
-    return { label: 'Fair', color: 'text-orange-600 dark:text-orange-400' };
+    if (score >= 0.8) return { label: 'Excellent', color: 'text-emerald-400' };
+    if (score >= 0.6) return { label: 'Good', color: 'text-yellow-400' };
+    return { label: 'Fair', color: 'text-orange-400' };
   };
 
   const quality = getQualityLabel(skill.aiProcessed.qualityScore);
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto py-8 sm:py-12">
+        {/* Breadcrumb */}
+        <a href="/" className="inline-flex items-center text-sm text-zinc-500 hover:text-white transition-colors mb-6">
+          ← Back to browse
+        </a>
+
         {/* Header */}
-        <div className="mb-8">
-          <a href="/" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mb-4 inline-block">
-            ← Back to browse
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            {skill.name}
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-            {skill.description}
-          </p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
+          {skill.name}
+        </h1>
+        <p className="text-sm text-zinc-400 mb-4">
+          by {skill.author.name}
+        </p>
+        <p className="text-zinc-400 mb-5 text-sm leading-relaxed">
+          {skill.description}
+        </p>
 
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {skill.categories.map((category: string) => (
-              <span
-                key={category}
-                className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full"
-              >
-                {category}
-              </span>
-            ))}
-          </div>
+        {/* Categories */}
+        <div className="flex flex-wrap gap-1.5 mb-6">
+          {skill.categories.map((category: string) => (
+            <span
+              key={category}
+              className="px-2.5 py-1 bg-zinc-800 text-zinc-400 text-xs rounded-md border border-zinc-700/50"
+            >
+              {category}
+            </span>
+          ))}
+        </div>
 
-          {/* Download Button */}
+        {/* Download + Stats row */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8 pb-8 border-b border-zinc-800/80">
           <a
             href={`/api/skills/${id}/download`}
             download
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-zinc-200 text-zinc-900 text-sm font-medium rounded-lg transition-colors"
           >
-            <span>↓</span>
-            Download Skill
+            ↓ Download Skill
           </a>
-        </div>
-
-        {/* Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Author */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
-              AUTHOR
-            </h3>
-            <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
-              {skill.author.name}
-            </p>
-            {skill.author.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                {skill.author.description}
-              </p>
-            )}
-          </div>
-
-          {/* Stats */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
-              STATS
-            </h3>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Downloads</span>
-                <span className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                  {skill.downloads}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Quality</span>
-                <span className={`text-lg font-medium ${quality.color}`}>
-                  {quality.label}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Uploaded</span>
-                <span className="text-sm text-gray-900 dark:text-gray-100">
-                  {formatDate(skill.uploadedAt)}
-                </span>
-              </div>
+          <div className="flex items-center gap-5 text-sm">
+            <div>
+              <span className="font-mono text-white">{formatDownloads(skill.downloads)}</span>
+              <span className="text-zinc-500 ml-1.5">installs</span>
+            </div>
+            <div>
+              <span className={`font-medium ${quality.color}`}>{quality.label}</span>
+              <span className="text-zinc-500 ml-1.5">quality</span>
             </div>
           </div>
         </div>
 
-        {/* Keywords */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 mb-8">
-          <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">
-            KEYWORDS
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {skill.keywords.map((keyword: string) => (
-              <span
-                key={keyword}
-                className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded"
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
+        {/* Info sections */}
+        <div className="space-y-6">
+          {/* Author */}
+          {skill.author.description && (
+            <div className="border border-zinc-800/80 rounded-lg p-4">
+              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                About the Author
+              </h3>
+              <p className="text-sm text-zinc-400">{skill.author.description}</p>
+            </div>
+          )}
 
-        {/* AI Processing Info */}
-        {(skill.aiProcessed.securityIssuesFound || skill.aiProcessed.modificationsMade.length > 0) && (
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg border border-yellow-200 dark:border-yellow-800 mb-8">
-            <h3 className="text-sm font-semibold text-yellow-900 dark:text-yellow-200 mb-3">
-              🔒 AI SECURITY PROCESSING
+          {/* Stats */}
+          <div className="border border-zinc-800/80 rounded-lg p-4">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
+              Details
             </h3>
-            {skill.aiProcessed.securityIssuesFound && (
-              <p className="text-sm text-yellow-800 dark:text-yellow-300 mb-2">
-                Security issues were detected and resolved.
-              </p>
-            )}
-            {skill.aiProcessed.modificationsMade.length > 0 && (
-              <div>
-                <p className="text-sm text-yellow-800 dark:text-yellow-300 mb-2">
-                  Modifications made:
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-500">Downloads</span>
+                <span className="font-mono text-zinc-200">{skill.downloads}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-500">Quality Score</span>
+                <span className={`font-medium ${quality.color}`}>
+                  {Math.round(skill.aiProcessed.qualityScore * 100)}%
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-500">Uploaded</span>
+                <span className="text-zinc-300">{formatDate(skill.uploadedAt)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Keywords */}
+          <div className="border border-zinc-800/80 rounded-lg p-4">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+              Keywords
+            </h3>
+            <div className="flex flex-wrap gap-1.5">
+              {skill.keywords.map((keyword: string) => (
+                <span
+                  key={keyword}
+                  className="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-xs rounded-md"
+                >
+                  {keyword}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* AI Security Processing */}
+          {(skill.aiProcessed.securityIssuesFound || skill.aiProcessed.modificationsMade.length > 0) && (
+            <div className="border border-yellow-800/40 rounded-lg p-4 bg-yellow-950/20">
+              <h3 className="text-xs font-semibold text-yellow-500 uppercase tracking-wider mb-2">
+                🔒 Security Processing
+              </h3>
+              {skill.aiProcessed.securityIssuesFound && (
+                <p className="text-sm text-yellow-400/80 mb-1">
+                  Security issues were detected and resolved.
                 </p>
-                <ul className="list-disc list-inside text-sm text-yellow-700 dark:text-yellow-400 space-y-1">
+              )}
+              {skill.aiProcessed.modificationsMade.length > 0 && (
+                <ul className="list-disc list-inside text-xs text-yellow-500/70 space-y-0.5">
                   {skill.aiProcessed.modificationsMade.map((mod: string, i: number) => (
                     <li key={i}>{mod}</li>
                   ))}
                 </ul>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
-        {/* How to Use */}
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3">
-            💡 How to Use This Skill
-          </h3>
-          <div className="space-y-3 text-sm text-blue-800 dark:text-blue-300">
-            <p>
-              <strong>1. Download the skill</strong> by clicking the button above
-            </p>
-            <p>
-              <strong>2. Place it in your project</strong> at <code className="bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">./skills/</code> directory
-            </p>
-            <p>
-              <strong>3. Use with XibeCode or MCP</strong> - The skill will be automatically loaded
-            </p>
-            <div className="mt-4 p-3 bg-blue-100 dark:bg-blue-900 rounded">
-              <p className="font-mono text-xs">
-                # MCP API endpoint<br />
+          {/* How to Use */}
+          <div className="border border-zinc-800/80 rounded-lg p-4">
+            <h3 className="text-sm font-medium text-zinc-200 mb-3">
+              💡 How to Use
+            </h3>
+            <div className="space-y-2 text-sm text-zinc-400">
+              <p><span className="text-zinc-300 font-medium">1.</span> Download the skill file</p>
+              <p><span className="text-zinc-300 font-medium">2.</span> Place it in your project&apos;s <code className="bg-zinc-800 px-1.5 py-0.5 rounded text-xs font-mono text-zinc-300">./skills/</code> directory</p>
+              <p><span className="text-zinc-300 font-medium">3.</span> Use with XibeCode or MCP — loaded automatically</p>
+              <div className="mt-3 p-2.5 bg-zinc-800/80 rounded font-mono text-xs text-zinc-400 border border-zinc-700/50">
                 GET /mcp/skills/{id}/content
-              </p>
+              </div>
             </div>
           </div>
         </div>

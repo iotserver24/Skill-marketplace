@@ -14,62 +14,47 @@ interface SkillCardProps {
     qualityScore?: number;
     uploadedAt: string;
   };
+  rank?: number;
 }
 
-export default function SkillCard({ skill }: SkillCardProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
-    });
-  };
-
-  const getQualityColor = (score?: number) => {
-    if (!score) return 'text-gray-500';
-    if (score >= 0.8) return 'text-green-600 dark:text-green-400';
-    if (score >= 0.6) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-orange-600 dark:text-orange-400';
+export default function SkillCard({ skill, rank }: SkillCardProps) {
+  const formatDownloads = (count: number) => {
+    if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
+    return count.toString();
   };
 
   return (
     <a
       href={`/skills/${skill.id}`}
-      className="block p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition-all bg-white dark:bg-gray-800"
+      className="group flex items-center gap-4 px-4 py-3.5 border-b border-zinc-800/60 hover:bg-zinc-800/40 transition-colors"
     >
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-          {skill.name}
-        </h3>
-        {skill.qualityScore && (
-          <span className={`text-sm font-medium ${getQualityColor(skill.qualityScore)}`}>
-            {Math.round(skill.qualityScore * 100)}% quality
-          </span>
-        )}
-      </div>
+      {rank !== undefined && (
+        <span className="text-sm font-mono text-zinc-500 w-6 text-right shrink-0">
+          {rank}
+        </span>
+      )}
 
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-        {skill.description}
-      </p>
-
-      <div className="flex flex-wrap gap-2 mb-4">
-        {skill.categories.map((category) => (
-          <span
-            key={category}
-            className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded"
-          >
-            {category}
-          </span>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-        <span>by {skill.author.name}</span>
-        <div className="flex items-center gap-3">
-          <span>↓ {skill.downloads}</span>
-          <span>{formatDate(skill.uploadedAt)}</span>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-0.5">
+          <h3 className="text-sm font-medium text-white group-hover:text-zinc-300 transition-colors truncate">
+            {skill.name}
+          </h3>
         </div>
+        <p className="text-xs text-zinc-500 truncate">
+          {skill.author.name}
+          {skill.categories.length > 0 && (
+            <span className="text-zinc-600"> · {skill.categories.slice(0, 2).join(', ')}</span>
+          )}
+        </p>
+      </div>
+
+      <div className="text-right shrink-0">
+        <span className="text-sm font-mono text-zinc-300">
+          {formatDownloads(skill.downloads)}
+        </span>
+        <p className="text-xs text-zinc-600 uppercase tracking-wide">
+          installs
+        </p>
       </div>
     </a>
   );

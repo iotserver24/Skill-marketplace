@@ -45,94 +45,111 @@ export default async function HomePage({
   const { skills, pagination } = data;
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Discover AI Coding Skills
+    <div className="px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto">
+        {/* Hero */}
+        <div className="text-center pt-16 pb-10 sm:pt-24 sm:pb-14">
+          <h1 className="text-3xl sm:text-5xl font-bold text-white mb-3 tracking-tight">
+            Skills Marketplace
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-            Community-powered skills to enhance your AI development workflow
+          <p className="text-sm sm:text-base text-zinc-400 mb-8 max-w-md mx-auto">
+            Discover, share, and install community-powered skills for AI coding assistants
           </p>
           <SearchBar />
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+        {/* Stats bar */}
+        <div className="flex items-center justify-center gap-6 sm:gap-8 mb-8 text-center">
+          <div>
+            <div className="text-lg font-mono font-semibold text-white">
               {pagination.total}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Total Skills
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
+              Skills
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
-            <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+          <div className="w-px h-6 bg-zinc-800" />
+          <div>
+            <div className="text-lg font-mono font-semibold text-white">
               {skills.reduce((sum: number, s: any) => sum + s.downloads, 0)}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Downloads
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
+              Installs
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
-            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+          <div className="w-px h-6 bg-zinc-800" />
+          <div>
+            <div className="text-lg font-mono font-semibold text-white">
               Free
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              & Open Source
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
+              Open Source
             </div>
           </div>
         </div>
 
-        {/* Results */}
-        {query && (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-              Search results for &quot;{query}&quot;
+        {/* Leaderboard */}
+        <div className="border border-zinc-800/80 rounded-lg overflow-hidden bg-zinc-900/50">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800/80">
+            <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              {query ? `Results for "${query}"` : 'Skills Leaderboard'}
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Found {pagination.total} skill{pagination.total !== 1 ? 's' : ''}
-            </p>
+            {query && (
+              <span className="text-xs text-zinc-500">
+                {pagination.total} found
+              </span>
+            )}
           </div>
-        )}
 
-        {/* Skills Grid */}
-        {skills.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {skills.map((skill: any) => (
-              <SkillCard key={skill.id} skill={skill} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400">
-              {query ? 'No skills found. Try a different search term.' : 'No skills yet. Be the first to upload one!'}
-            </p>
-          </div>
-        )}
+          {/* Skills List */}
+          {skills.length > 0 ? (
+            <div>
+              {skills.map((skill: any, index: number) => (
+                <SkillCard
+                  key={skill.id}
+                  skill={skill}
+                  rank={(page - 1) * 20 + index + 1}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <p className="text-sm text-zinc-500">
+                {query ? 'No skills found. Try a different search.' : 'No skills yet. Be the first to upload one!'}
+              </p>
+              {!query && (
+                <a
+                  href="/upload"
+                  className="inline-block mt-4 text-sm px-4 py-2 bg-white hover:bg-zinc-200 text-zinc-900 font-medium rounded-md transition-colors"
+                >
+                  Upload a Skill
+                </a>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="mt-12 flex justify-center gap-2">
+          <div className="mt-6 mb-6 flex items-center justify-center gap-2">
             {page > 1 && (
               <a
                 href={`/?${new URLSearchParams({ ...(query && { q: query }), page: (page - 1).toString() }).toString()}`}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="px-3 py-1.5 text-sm border border-zinc-700 rounded-md hover:bg-zinc-800 transition-colors text-zinc-300"
               >
-                Previous
+                ← Prev
               </a>
             )}
-            <span className="px-4 py-2 text-gray-600 dark:text-gray-400">
-              Page {page} of {pagination.totalPages}
+            <span className="px-3 py-1.5 text-sm text-zinc-500 font-mono">
+              {page} / {pagination.totalPages}
             </span>
             {page < pagination.totalPages && (
               <a
                 href={`/?${new URLSearchParams({ ...(query && { q: query }), page: (page + 1).toString() }).toString()}`}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="px-3 py-1.5 text-sm border border-zinc-700 rounded-md hover:bg-zinc-800 transition-colors text-zinc-300"
               >
-                Next
+                Next →
               </a>
             )}
           </div>

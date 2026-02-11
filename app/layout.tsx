@@ -1,5 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "Skills Marketplace - Share & Discover AI Coding Skills",
@@ -12,50 +17,49 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        <nav className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <a href="/" className="flex items-center gap-2">
-                <span className="text-2xl">🎯</span>
-                <span className="text-xl font-bold text-gray-900 dark:text-gray-100">
+    <html lang="en" className="dark">
+      <body className="antialiased bg-zinc-950 text-zinc-100">
+        <nav className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-lg">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center justify-between h-14">
+              <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <span className="text-lg">🎯</span>
+                <span className="text-base font-semibold text-white">
                   Skills Marketplace
                 </span>
               </a>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1">
                 <a
                   href="/"
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
+                  className="text-sm text-zinc-400 hover:text-white transition-colors px-3 py-1.5 rounded-md hover:bg-zinc-800/60"
                 >
                   Browse
                 </a>
                 <a
                   href="/upload"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                  className="text-sm px-3 py-1.5 bg-white hover:bg-zinc-200 text-zinc-900 font-medium rounded-md transition-colors"
                 >
-                  Upload Skill
+                  Upload
                 </a>
               </div>
             </div>
           </div>
         </nav>
-        <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <main className="min-h-screen">
           {children}
         </main>
-        <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              <p>Skills Marketplace - Open source AI skill sharing platform</p>
-              <p className="mt-2">
-                <a href="/api/mcp/skills/search" className="text-blue-600 dark:text-blue-400 hover:underline">
+        <footer className="border-t border-zinc-800/80 mt-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
+              <p>Skills Marketplace — Open source AI skill sharing</p>
+              <div className="flex items-center gap-4">
+                <a href="/api/mcp/skills/search" className="hover:text-zinc-300 transition-colors">
                   MCP API
                 </a>
-                {' · '}
-                <a href="https://github.com" className="text-blue-600 dark:text-blue-400 hover:underline">
+                <a href="https://github.com" className="hover:text-zinc-300 transition-colors">
                   GitHub
                 </a>
-              </p>
+              </div>
             </div>
           </div>
         </footer>

@@ -7,56 +7,52 @@ export const metadata = {
 
 export default function UploadPage() {
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+    <div className="px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center pt-12 pb-8 sm:pt-16 sm:pb-10">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
             Upload a Skill
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
-            Share your expertise with the community. Upload a skill and help others code better with AI.
+          <p className="text-sm text-zinc-400">
+            Share your expertise with the community
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="border border-zinc-800/80 rounded-lg bg-zinc-900/50 p-6 sm:p-8">
           <UploadForm />
         </div>
 
-        <div className="mt-12 space-y-6">
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg border border-yellow-200 dark:border-yellow-800">
-            <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-200 mb-3">
-              📋 What makes a good skill?
+        <div className="mt-8 mb-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="p-4 border border-zinc-800/80 rounded-lg">
+            <h3 className="text-sm font-medium text-zinc-200 mb-2">
+              📋 Good Skills
             </h3>
-            <ul className="space-y-2 text-sm text-yellow-800 dark:text-yellow-300">
-              <li>✓ Clear, specific instructions for the AI</li>
-              <li>✓ Focused on a specific framework, language, or task</li>
-              <li>✓ Includes examples and best practices</li>
-              <li>✓ Well-structured with headings and sections</li>
-              <li>✓ Free of personal/sensitive information</li>
+            <ul className="space-y-1 text-xs text-zinc-500">
+              <li>✓ Clear AI instructions</li>
+              <li>✓ Focused on specific tasks</li>
+              <li>✓ Includes examples</li>
+              <li>✓ Well-structured</li>
             </ul>
           </div>
 
-          <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg border border-purple-200 dark:border-purple-800">
-            <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-200 mb-3">
+          <div className="p-4 border border-zinc-800/80 rounded-lg">
+            <h3 className="text-sm font-medium text-zinc-200 mb-2">
               🤖 AI Processing
             </h3>
-            <p className="text-sm text-purple-800 dark:text-purple-300">
-              Your skill will be analyzed by Claude AI to extract metadata, categorize content, 
-              and perform security scanning. Any sensitive information will be automatically removed 
-              to keep the marketplace safe.
+            <p className="text-xs text-zinc-500">
+              Claude AI extracts metadata, categorizes content, and scans for sensitive information automatically.
             </p>
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3">
-              💡 Example Use Cases
+          <div className="p-4 border border-zinc-800/80 rounded-lg">
+            <h3 className="text-sm font-medium text-zinc-200 mb-2">
+              💡 Examples
             </h3>
-            <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-300">
-              <li>• React best practices and conventions</li>
-              <li>• Python FastAPI development patterns</li>
-              <li>• TailwindCSS component templates</li>
-              <li>• Testing strategies for TypeScript</li>
-              <li>• SQL query optimization techniques</li>
+            <ul className="space-y-1 text-xs text-zinc-500">
+              <li>• React best practices</li>
+              <li>• Python API patterns</li>
+              <li>• Testing strategies</li>
+              <li>• SQL optimization</li>
             </ul>
           </div>
         </div>
