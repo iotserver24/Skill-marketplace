@@ -64,7 +64,7 @@ export default async function HomePage({
             <div className="text-lg font-mono font-semibold text-white">
               {pagination.total}
             </div>
-            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
               Skills
             </div>
           </div>
@@ -73,7 +73,7 @@ export default async function HomePage({
             <div className="text-lg font-mono font-semibold text-white">
               {skills.reduce((sum: number, s: any) => sum + s.downloads, 0)}
             </div>
-            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
               Installs
             </div>
           </div>
@@ -82,7 +82,7 @@ export default async function HomePage({
             <div className="text-lg font-mono font-semibold text-white">
               Free
             </div>
-            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mt-0.5">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
               Open Source
             </div>
           </div>

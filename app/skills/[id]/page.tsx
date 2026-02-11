@@ -133,7 +133,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
           {/* Author */}
           {skill.author.description && (
             <div className="border border-zinc-800/80 rounded-lg p-4">
-              <h3 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
                 About the Author
               </h3>
               <p className="text-sm text-zinc-400">{skill.author.description}</p>
@@ -142,7 +142,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
 
           {/* Stats */}
           <div className="border border-zinc-800/80 rounded-lg p-4">
-            <h3 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-3">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
               Details
             </h3>
             <div className="space-y-2">
@@ -165,7 +165,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
 
           {/* Keywords */}
           <div className="border border-zinc-800/80 rounded-lg p-4">
-            <h3 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
               Keywords
             </h3>
             <div className="flex flex-wrap gap-1.5">
@@ -183,7 +183,7 @@ export default async function SkillPage({ params }: { params: Promise<{ id: stri
           {/* AI Security Processing */}
           {(skill.aiProcessed.securityIssuesFound || skill.aiProcessed.modificationsMade.length > 0) && (
             <div className="border border-yellow-800/40 rounded-lg p-4 bg-yellow-950/20">
-              <h3 className="text-[10px] font-semibold text-yellow-500 uppercase tracking-wider mb-2">
+              <h3 className="text-xs font-semibold text-yellow-500 uppercase tracking-wider mb-2">
                 🔒 Security Processing
               </h3>
               {skill.aiProcessed.securityIssuesFound && (

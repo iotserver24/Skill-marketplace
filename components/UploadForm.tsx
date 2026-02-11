@@ -199,7 +199,7 @@ export default function UploadForm() {
       </form>
 
       <div className="mt-6 p-4 border border-zinc-800/80 rounded-lg">
-        <h4 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">What happens next?</h4>
+        <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">What happens next?</h4>
         <ul className="text-sm text-zinc-400 space-y-1">
           <li>• AI analyzes your skill and extracts metadata</li>
           <li>• Security scan removes any sensitive information</li>

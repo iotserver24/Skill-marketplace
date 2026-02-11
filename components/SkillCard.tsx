@@ -52,7 +52,7 @@ export default function SkillCard({ skill, rank }: SkillCardProps) {
         <span className="text-sm font-mono text-zinc-300">
           {formatDownloads(skill.downloads)}
         </span>
-        <p className="text-[10px] text-zinc-600 uppercase tracking-wide">
+        <p className="text-xs text-zinc-600 uppercase tracking-wide">
           installs
         </p>
       </div>
